@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_explore">Explore</string>
+    <string name="title_favorites">Favorites</string>
+    <string name="title_reservations">Reservations</string>
+    <string name="title_profile">Profile</string>
+    <string name="title_chkIn">Check In</string>
+    <string name="title_chkOut">Check Out</string>
+    <string name="title_edCity">City</string>
+    <string name="title_search">Search</string>
+</resources>
