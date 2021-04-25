@@ -12,7 +12,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.jasson.tourAppMobile.R
 import com.jasson.tourAppMobile.model.Tour
-import com.jasson.tourAppMobile.utils.SelectDateFragment
+import com.jasson.tourAppMobile.helpers.SelectDateFragment
+import com.jasson.tourAppMobile.helpers.loadJSONFromAsset
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.IOException
@@ -55,54 +56,18 @@ class ExploreFragment : Fragment() {
         val but: Button = root.findViewById(R.id.filterBtn)
         but.setOnClickListener{
             try {
-                val obj = JSONObject(loadJSONFromAsset())
+                val obj = JSONObject(loadJSONFromAsset(requireActivity().assets.open("tours.json"))!!)
                 val tourArray = obj.getJSONArray("tours")
                 val tourList = ArrayList<Tour>()
-                var m_li: HashMap<String, String>
                 for (i in 0 until tourArray.length()) {
                     val tourIndex = tourArray.getJSONObject(i)
-                    /*Log.d("Details-->", tourIndex.getString("formule"))
-                    Log.d("Details-->", tourIndex.getString("url"))
-                    val formula_value = tourIndex.getString("formule")
-                    val url_value = tourIndex.getString("url")
-                    */
-                     val myTour = Tour(
-                             tourIndex.getInt("id"),
-                             tourIndex.getString("name")
-                     )
-
-                    //Add your values in your `ArrayList` as below:
-                    /*m_li = HashMap()
-                    m_li["formule"] = formula_value
-                    m_li["url"] = url_value
-                    */
-
-                    tourList.add(myTour)
+                    tourList.add(Tour(tourIndex))
                 }
                 Log.d("aaaa",tourList.toString())
             } catch (e: JSONException) {
                 e.printStackTrace()
             }
         }
-
         return root
     }
-
-    fun loadJSONFromAsset(): String? {
-        var json: String? = null
-        try {
-            val inp: InputStream = requireActivity().assets.open("tours.json")
-            val size: Int = inp.available()
-            val buffer = ByteArray(size)
-            inp.read(buffer)
-            inp.close()
-            json = String(buffer, Charset.forName("UTF-8"))
-        } catch (ex: IOException) {
-            ex.printStackTrace()
-            return null
-        }
-        return json
-    }
-
-
 }
