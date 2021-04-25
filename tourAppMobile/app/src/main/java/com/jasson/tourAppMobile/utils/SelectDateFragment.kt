@@ -1,4 +1,4 @@
-package com.jasson.tourAppMobile.ui.helpers
+package com.jasson.tourAppMobile.utils
 
 import android.app.DatePickerDialog
 import android.app.Dialog

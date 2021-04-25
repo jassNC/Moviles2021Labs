@@ -1,0 +1,70 @@
+{
+  "tours": [
+    {
+      "id": 1,
+      "name": "Volcanes",
+      "description": "Description of the tour",
+      "rating": 4,
+      "checkIn": "12/02/2021",
+      "checkOut": "02/02/2021",
+      "price": 100,
+      "seats": 21,
+      "city": "Cartago",
+      "category": {
+        "id": 1,
+        "name": "Aventura"
+      },
+      "activities": [
+        {
+          "id": 1,
+          "body": "Tour guiado"
+        }
+      ],
+      "reviews": []
+    },
+    {
+      "id": 2,
+      "name": "dsadadsa",
+      "description": "sadsadsdasd",
+      "rating": 3,
+      "checkIn": "19/04/2021",
+      "checkOut": "30/04/2021",
+      "price": 130,
+      "seats": 15,
+      "city": "fads",
+      "category": {
+        "id": 1,
+        "name": "Aventura"
+      },
+      "activities": [
+        {
+          "id": 1,
+          "body": "Tour guiado"
+        }
+      ],
+      "reviews": []
+    },
+    {
+      "id": 3,
+      "name": "ghfhgfh",
+      "description": "hgfhgfhfhg",
+      "rating": 5,
+      "checkIn": "02/02/2021",
+      "checkOut": "10/02/2021",
+      "price": 900,
+      "seats": 81,
+      "city": "asdssad",
+      "category": {
+        "id": 1,
+        "name": "Aventura"
+      },
+      "activities": [
+        {
+          "id": 1,
+          "body": "Tour guiado"
+        }
+      ],
+      "reviews": []
+    }
+  ]
+}
