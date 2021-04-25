@@ -10,6 +10,8 @@ import android.widget.EditText
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.jasson.tourAppMobile.R
 import com.jasson.tourAppMobile.model.Tour
 import com.jasson.tourAppMobile.helpers.SelectDateFragment
@@ -21,53 +23,60 @@ import java.io.InputStream
 import java.nio.charset.Charset
 
 
-class ExploreFragment : Fragment() {
+class ExploreFragment : Fragment(), TourSelectionListener {
 
     private lateinit var exploreViewModel: ExploreViewModel
+    private var tourList = ArrayList<Tour>()
+    private  var customAdapter: CustomAdapter?=null
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
 
-        exploreViewModel =
-            ViewModelProvider(this).get(ExploreViewModel::class.java)
+        exploreViewModel = ViewModelProvider(this).get(ExploreViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_explore, container, false)
-        /*
-        val textView: TextView = root.findViewById(R.id.text_dashboard)
-        exploreViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
-        })
-
-         */
         val checkInDate: EditText = root.findViewById(R.id.editTextChkIn)
         val checkOutDate: EditText = root.findViewById(R.id.editTextChkOut)
+        val recyclerView: RecyclerView = root.findViewById(R.id.my_recycler_view)
 
-        checkInDate.setOnClickListener{
+
+        checkInDate.setOnClickListener {
             val newFragment: DialogFragment = SelectDateFragment(checkInDate)
             newFragment.show(parentFragmentManager, "DatePicker")
         }
-        checkOutDate.setOnClickListener{
+        checkOutDate.setOnClickListener {
             val newFragment: DialogFragment = SelectDateFragment(checkOutDate)
             newFragment.show(parentFragmentManager, "DatePicker")
         }
 
-        val but: Button = root.findViewById(R.id.filterBtn)
-        but.setOnClickListener{
-            try {
-                val obj = JSONObject(loadJSONFromAsset(requireActivity().assets.open("tours.json"))!!)
-                val tourArray = obj.getJSONArray("tours")
-                val tourList = ArrayList<Tour>()
-                for (i in 0 until tourArray.length()) {
-                    val tourIndex = tourArray.getJSONObject(i)
-                    tourList.add(Tour(tourIndex))
-                }
-                Log.d("aaaa",tourList.toString())
-            } catch (e: JSONException) {
-                e.printStackTrace()
-            }
-        }
+        loadTours()
+
+        recyclerView.layoutManager = StaggeredGridLayoutManager(1, RecyclerView.VERTICAL)
+        customAdapter = CustomAdapter(tourList, this)
+        recyclerView.adapter = customAdapter
+
         return root
+    }
+
+    fun loadTours(){
+        try {
+            val obj =
+                JSONObject(loadJSONFromAsset(requireActivity().
+                assets.open("tours.json"))!!)
+            val tourArray = obj.getJSONArray("tours")
+            for (i in 0 until tourArray.length()) {
+                val tourIndex = tourArray.getJSONObject(i)
+                tourList.add(Tour(tourIndex))
+            }
+            Log.d("aaaa", tourList.toString())
+        } catch (e: JSONException) {
+            e.printStackTrace()
+        }
+    }
+
+    override fun onTourSelected(tourIndex: Int) {
+
     }
 }
