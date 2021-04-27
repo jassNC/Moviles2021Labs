@@ -9,6 +9,7 @@
     <string name="title_chkOut">Check Out</string>
     <string name="title_edCity">City</string>
     <string name="title_search">Search</string>
-    <string name="title_opinions">Reviews</string>
+    <string name="title_reviews">%1$i Reviews</string>
     <string name="title_price">Price:</string>
+    <string name="cont_price">$ %1$d</string>
 </resources>

@@ -55,12 +55,10 @@ class CustomAdapter(
                 val rating = itemView.findViewById(R.id.ratingBar) as RatingBar
                 val opinions = itemView.findViewById(R.id.textViewOpinions) as TextView
                 val price = itemView.findViewById(R.id.textViewPrice) as TextView
-
                 val imageUri = "@drawable/${tour.image}"
                 val imageResource = context.resources.getIdentifier(imageUri, null, context.packageName)
                 val logoDrawable = context.resources.getDrawable(imageResource)
                 poster.setImageDrawable(logoDrawable)
-
                 titleTextView.text = tour.name
                 rating.numStars = tour.rating
                 opinions.text = "${tour.reviews.size} reviews"
