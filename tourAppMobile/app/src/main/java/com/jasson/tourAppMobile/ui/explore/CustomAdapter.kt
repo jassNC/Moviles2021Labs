@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.jasson.tourAppMobile.R
 import com.jasson.tourAppMobile.model.Tour
+import org.w3c.dom.Text
 import java.lang.Exception
 
 class CustomAdapter(
@@ -47,16 +48,24 @@ class CustomAdapter(
         }
 
         fun bindCell(tour: Tour) {
+            val context = this.itemView.context
             try {
                 val titleTextView = itemView.findViewById(R.id.textViewTourTitle) as TextView
-                val datesTextView = itemView.findViewById(R.id.textViewDates) as TextView
                 val poster = itemView.findViewById(R.id.tourPoster) as ImageView
                 val rating = itemView.findViewById(R.id.ratingBar) as RatingBar
+                val opinions = itemView.findViewById(R.id.textViewOpinions) as TextView
+                val price = itemView.findViewById(R.id.textViewPrice) as TextView
+
+                val imageUri = "@drawable/${tour.image}"
+                val imageResource = context.resources.getIdentifier(imageUri, null, context.packageName)
+                val logoDrawable = context.resources.getDrawable(imageResource)
+                poster.setImageDrawable(logoDrawable)
 
                 titleTextView.text = tour.name
-                datesTextView.text = "${tour.checkIn} - ${tour.checkOut}"
                 rating.numStars = tour.rating
-                poster.setImageDrawable(ContextCompat.getDrawable(itemView.context,R.drawable.vulcan))
+                opinions.text = "${tour.reviews.size} reviews"
+                price.text = "$${tour.price}"
+
 
             } catch (ex: Exception) {
 

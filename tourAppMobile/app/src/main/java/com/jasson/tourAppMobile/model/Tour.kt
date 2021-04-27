@@ -5,8 +5,8 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 data class Tour(var id:Int = -1, var name: String = "", var description: String="", var rating: Int = -1,
-                var checkIn: String = "", var checkOut: String = "",
-                var price: Double = 0.0, var seats: Int = -1, var city: String = "",
+                var checkIn: String = "", var checkOut: String = "", var price: Double = 0.0,
+                var seats: Int = -1, var city: String = "", var image: String = "",
                 var category: Category = Category(), var activities: ArrayList<Activity> = ArrayList(),
                 var reviews: ArrayList<Review> = ArrayList()){
 
@@ -20,6 +20,7 @@ data class Tour(var id:Int = -1, var name: String = "", var description: String=
         this.price = jsonTour.getDouble("price")
         this.seats = jsonTour.getInt("seats")
         this.city = jsonTour.getString("city")
+        this.image = jsonTour.getString("image")
         this.category = Category(jsonTour.getJSONObject("category"))
         val activities = jsonTour.getJSONArray("activities")
         for (i in 0 until activities.length()){

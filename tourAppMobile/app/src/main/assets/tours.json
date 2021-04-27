@@ -2,14 +2,15 @@
   "tours": [
     {
       "id": 1,
-      "name": "Volcanes",
-      "description": "Description of the tour",
+      "name": "Costa Rican Volcanos",
+      "description": "Visit the amazing volcanos",
       "rating": 4,
       "checkIn": "12/02/2021",
       "checkOut": "02/02/2021",
       "price": 100,
       "seats": 21,
       "city": "Cartago",
+      "image": "vulcan",
       "category": {
         "id": 1,
         "name": "Aventura"
@@ -20,18 +21,32 @@
           "body": "Tour guiado"
         }
       ],
-      "reviews": []
+      "reviews": [
+        {
+          "id": 1,
+          "body": "Review 1"
+        },
+        {
+          "id": 1,
+          "body": "Review 1"
+        },
+        {
+          "id": 1,
+          "body": "Review 1"
+        }
+      ]
     },
     {
       "id": 2,
-      "name": "dsadadsa",
-      "description": "sadsadsdasd",
+      "name": "Natural History Museum",
+      "description": "Description here",
       "rating": 3,
       "checkIn": "19/04/2021",
       "checkOut": "30/04/2021",
       "price": 130,
       "seats": 15,
-      "city": "fads",
+      "city": "New York",
+      "image": "natural_history",
       "category": {
         "id": 1,
         "name": "Aventura"
@@ -42,18 +57,28 @@
           "body": "Tour guiado"
         }
       ],
-      "reviews": []
+      "reviews": [
+        {
+          "id": 1,
+          "body": "Review 1"
+        },
+        {
+          "id": 1,
+          "body": "Review 1"
+        }
+      ]
     },
     {
       "id": 3,
-      "name": "ghfhgfh",
+      "name": "Opera at Sydney",
       "description": "hgfhgfhfhg",
       "rating": 5,
       "checkIn": "02/02/2021",
       "checkOut": "10/02/2021",
       "price": 900,
       "seats": 81,
-      "city": "asdssad",
+      "city": "Sidney",
+      "image": "sidney",
       "category": {
         "id": 1,
         "name": "Aventura"
@@ -64,18 +89,44 @@
           "body": "Tour guiado"
         }
       ],
-      "reviews": []
+      "reviews": [
+        {
+          "id": 1,
+          "body": "Review 1"
+        },
+        {
+          "id": 1,
+          "body": "Review 1"
+        },
+        {
+          "id": 1,
+          "body": "Review 1"
+        },
+        {
+          "id": 1,
+          "body": "Review 1"
+        },
+        {
+          "id": 1,
+          "body": "Review 1"
+        },
+        {
+          "id": 1,
+          "body": "Review 1"
+        }
+      ]
     },
     {
       "id": 4,
-      "name": "ghfhgfh",
-      "description": "hgfhgfhfhg",
+      "name": "Climb the Kilimanjaro",
+      "description": "Description",
       "rating": 5,
       "checkIn": "02/02/2021",
       "checkOut": "10/02/2021",
       "price": 900,
       "seats": 81,
-      "city": "asdssad",
+      "city": "Tanzania",
+      "image": "kilimanjaro",
       "category": {
         "id": 1,
         "name": "Aventura"
