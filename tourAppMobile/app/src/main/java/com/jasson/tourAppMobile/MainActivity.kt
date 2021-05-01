@@ -31,11 +31,13 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
+        //aquí traté de inicializar el input email pero no lo logré porque no está en el mismo activity sino en un fragment aparte
         val textView: TextView = findViewById(R.id.inputEmail) as TextView
         textView.setOnClickListener {
             textView.text = getString(R.string.title_email)
         }
 
+        //este es el método que cambia el estado del botón para cambiar el color
         inputEmail.addTextChangedListener(object:TextWatcher{
             override fun afterTextChanged(s: Editable?) {
                 Log.i("afterTextChanged: ", "not override")
