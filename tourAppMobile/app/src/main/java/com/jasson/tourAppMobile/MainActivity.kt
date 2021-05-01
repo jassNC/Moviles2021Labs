@@ -1,12 +1,17 @@
 package com.jasson.tourAppMobile
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
+import android.widget.TextView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import kotlinx.android.synthetic.main.fragment_profile.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -25,5 +30,27 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_notifications, R.id.navigation_profile))
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        val textView: TextView = findViewById(R.id.inputEmail) as TextView
+        textView.setOnClickListener {
+            textView.text = getString(R.string.title_email)
+        }
+
+        inputEmail.addTextChangedListener(object:TextWatcher{
+            override fun afterTextChanged(s: Editable?) {
+                Log.i("afterTextChanged: ", "not override")
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                Log.i("beforeTextChanged", "not override")
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if(inputEmail.length()>5){
+                    btnLogin.isEnabled = true
+                }
+            }
+
+        })
     }
 }
