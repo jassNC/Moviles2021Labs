@@ -11,5 +11,14 @@
     <string name="title_search">Search</string>
     <string name="title_reviews">%1$i Reviews</string>
     <string name="title_price">Price:</string>
-    <string name="cont_price">$ %1$d</string>
+    <string name="title_login">Login</string>
+    <string name="title_alredy">Already have an account?</string>
+    <string name="title_email">Email</string>
+    <string name="title_password">Password</string>
+    <string name="title_password_reset">Forgot your password?</string>
+    <string name="title_have_account">You do not have an account?</string>
+    <string name="title_sign_up">Sign up</string>
+    <string name="title_name">Name</string>
+    <string name="title_surnames">Surnames</string>
+    <string name="title_condition">I do not want to receive travel tips or promotions</string>
 </resources>
