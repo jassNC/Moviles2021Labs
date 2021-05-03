@@ -70,7 +70,6 @@ class ExploreFragment : Fragment(), TourSelectionListener {
                 val tourIndex = tourArray.getJSONObject(i)
                 tourList.add(Tour(tourIndex))
             }
-            Log.d("aaaa", tourList.toString())
         } catch (e: JSONException) {
             e.printStackTrace()
         }
