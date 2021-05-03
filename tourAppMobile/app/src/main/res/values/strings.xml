@@ -5,6 +5,7 @@
     <string name="title_favorites">Favorites</string>
     <string name="title_reservations">Reservations</string>
     <string name="title_profile">Profile</string>
+    <string name="title_register">Register</string>
     <string name="title_chkIn">Check In</string>
     <string name="title_chkOut">Check Out</string>
     <string name="title_edCity">City</string>
@@ -12,7 +13,8 @@
     <string name="title_reviews">%1$i Reviews</string>
     <string name="title_price">Price:</string>
     <string name="title_login">Login</string>
-    <string name="title_alredy">Already have an account?</string>
+    <string name="title_already">Have an account?</string>
+    <string name="title_create">Create an account?</string>
     <string name="title_email">Email</string>
     <string name="title_password">Password</string>
     <string name="title_password_reset">Forgot your password?</string>

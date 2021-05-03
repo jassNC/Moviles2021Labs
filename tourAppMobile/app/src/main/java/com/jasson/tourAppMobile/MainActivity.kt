@@ -27,10 +27,11 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(setOf(
                 R.id.navigation_explore, R.id.navigation_favorites, R.id.navigation_reservations,
-                R.id.navigation_profile))
+                R.id.navigation_profile, R.id.registerFragment))
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
+        /*
         //aquí traté de inicializar el input email pero no lo logré porque no está en el mismo activity sino en un fragment aparte
         val textView: TextView = findViewById(R.id.inputEmail) as TextView
         textView.setOnClickListener {
@@ -54,5 +55,6 @@ class MainActivity : AppCompatActivity() {
             }
 
         })
+         */
     }
 }
