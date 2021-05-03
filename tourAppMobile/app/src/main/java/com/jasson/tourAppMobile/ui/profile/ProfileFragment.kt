@@ -38,10 +38,13 @@ class ProfileFragment : Fragment() {
         profileViewModel =
             ViewModelProvider(this).get(ProfileViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_profile, container, false)
+
+
         val btnRegister: Button = root.findViewById(R.id.btnRegister)
         val btnLogin: Button = root.findViewById(R.id.btnLogin)
         val inputEmail: AppCompatEditText = root.findViewById(R.id.inputEmail)
         val inputPassword: AppCompatEditText = root.findViewById(R.id.inputPassword)
+
         inputEmail.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {}
             override fun beforeTextChanged(
@@ -98,9 +101,10 @@ class ProfileFragment : Fragment() {
             )
         ) {
             btn.backgroundTintList = context.resources.getColorStateList(R.color.primaryColor, null)
-            btn.isEnabled = true;
+            btn.isEnabled = true
         } else {
             btn.backgroundTintList = context.resources.getColorStateList(R.color.disabled, null)
+            btn.isEnabled = false
         }
 
     }
