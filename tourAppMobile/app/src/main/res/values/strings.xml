@@ -23,4 +23,6 @@
     <string name="title_name">Name</string>
     <string name="title_surnames">Surnames</string>
     <string name="title_condition">I do not want to receive travel tips or promotions</string>
+    <string name="title_country">Country</string>
+    <string name="title_birth">Birth date</string>
 </resources>
