@@ -59,6 +59,8 @@ class ProfileFragment : Fragment() {
                 before: Int, count: Int
             ) {
                 checkValues(inputEmail, inputPassword, btnLogin, root.context)
+
+                inflater.inflate(R.layout.fragment_favorites, container, false)
             }
 
         })
