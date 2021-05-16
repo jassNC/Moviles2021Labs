@@ -135,7 +135,7 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
         btn: Button,
         context: Context
     ) {
-        if (name.text!!.matches(Regex("[\\w]+[aeiou]+[\\w]")) && surnames.text!!.matches(Regex("[\\w]+[aeiou]")) && email.text!!.matches(Regex("[\\w]+@[\\w]+.+[\\w]{2,4}")) && password.text!!.matches(
+        if (name.text!!.matches(Regex("[A-Z]+[a-z]+[a-z]")) && surnames.text!!.matches(Regex("[A-Z]+[a-z]")) && email.text!!.matches(Regex("[\\w]+@[\\w]+.+[\\w]{2,4}")) && password.text!!.matches(
                 Regex("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@\$!.%*?&])[A-Za-z\\d@\$.!%*?&]{8,}")
             )
         ) {
