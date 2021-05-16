@@ -26,5 +26,5 @@
     <string name="title_country">Country</string>
     <string name="title_birth">Birth date</string>
     <string name="title_welcome">Welcome!</string>
-    <string name="title_password_indications">The password must contain eight characters, at least one lowercase letter and two special characters (@$!.%*?&amp;) example: Abcd7498?*</string>
+    <string name="title_password_indications">The password must contain eight characters, at least one lowercase letter and two special characters (@$!.%*?&amp;) example: Abcd7498?* (The order of the characters does not affect)</string>
 </resources>

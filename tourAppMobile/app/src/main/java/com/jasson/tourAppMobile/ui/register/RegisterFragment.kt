@@ -64,7 +64,7 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                 s: CharSequence, start: Int,
                 before: Int, count: Int
             ) {
-                checkValues(inputName, inputSurnames, inputEmail, inputPassword, birthDateField, btnReg, root.context)
+                checkValues(inputName, inputSurnames, inputEmail, inputPassword, btnReg, root.context)
             }
 
         })
@@ -82,7 +82,7 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                 s: CharSequence, start: Int,
                 before: Int, count: Int
             ) {
-                checkValues(inputName, inputSurnames, inputEmail, inputPassword, birthDateField, btnReg, root.context)
+                checkValues(inputName, inputSurnames, inputEmail, inputPassword, btnReg, root.context)
             }
 
         })
@@ -100,7 +100,7 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                 s: CharSequence, start: Int,
                 before: Int, count: Int
             ) {
-                checkValues(inputName, inputSurnames, inputEmail, inputPassword, birthDateField, btnReg, root.context)
+                checkValues(inputName, inputSurnames, inputEmail, inputPassword, btnReg, root.context)
             }
 
         })
@@ -118,7 +118,7 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                 s: CharSequence, start: Int,
                 before: Int, count: Int
             ) {
-                checkValues(inputName, inputSurnames, inputEmail, inputPassword, birthDateField, btnReg, root.context)
+                checkValues(inputName, inputSurnames, inputEmail, inputPassword, btnReg, root.context)
             }
 
         })
@@ -132,7 +132,6 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
         surnames: EditText,
         email: AppCompatEditText,
         password: AppCompatEditText,
-        birth: EditText,
         btn: Button,
         context: Context
     ) {
