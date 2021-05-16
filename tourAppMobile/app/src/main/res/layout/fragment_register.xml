@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     tools:context=".ui.register.RegisterFragment">
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -63,100 +62,80 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
-        android:id="@+id/inputName"
-        android:layout_width="350dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:background="@drawable/round_border"
-        android:drawableStart="@drawable/ic_person_name"
-        android:drawablePadding="16dp"
-        android:ems="10"
-        android:hint="@string/title_name"
-        android:inputType="text"
-        android:padding="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view2" />
-
-    <EditText
-        android:id="@+id/inputSurnameRegister"
-        android:layout_width="350dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="32dp"
-        android:background="@drawable/round_border"
-        android:drawableStart="@drawable/ic_person_surname"
-        android:drawablePadding="16dp"
-        android:ems="10"
-        android:hint="@string/title_surnames"
-        android:inputType="text"
-        android:padding="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inputName" />
-
-    <EditText
-        android:id="@+id/inputPasswordRegister"
-        android:layout_width="350dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="32dp"
-        android:background="@drawable/round_border"
-        android:drawableStart="@drawable/ic_lock"
-        android:drawablePadding="16dp"
-        android:ems="10"
-        android:hint="@string/title_password"
-        android:inputType="textPassword"
-        android:padding="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inputEmailRegister" />
-
-    <EditText
-        android:id="@+id/inputEmailRegister"
-        android:layout_width="350dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="32dp"
-        android:background="@drawable/round_border"
-        android:drawableStart="@drawable/ic_email"
-        android:drawablePadding="16dp"
-        android:ems="10"
-        android:hint="@string/title_email"
-        android:inputType="textEmailAddress"
-        android:padding="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inputSurnameRegister" />
-
-            <EditText
-                android:id="@+id/inputCountry"
+                android:id="@+id/inputName"
                 android:layout_width="350dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
-                android:layout_marginLeft="32dp"
-                android:layout_marginTop="16dp"
                 android:layout_marginEnd="32dp"
-                android:layout_marginRight="32dp"
                 android:background="@drawable/round_border"
-                android:drawableStart="@drawable/ic_baseline_person_pin_circle_24"
+                android:drawableStart="@drawable/ic_person_name"
                 android:drawablePadding="16dp"
                 android:ems="10"
-                android:hint="@string/title_country"
+                android:hint="@string/title_name"
                 android:inputType="text"
                 android:padding="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/inputPasswordRegister" />
+                app:layout_constraintTop_toBottomOf="@+id/view2" />
 
             <EditText
-                android:id="@+id/inputBirth"
+                android:id="@+id/inputSurnameRegister"
                 android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="32dp"
+                android:background="@drawable/round_border"
+                android:drawableStart="@drawable/ic_person_surname"
+                android:drawablePadding="16dp"
+                android:ems="10"
+                android:hint="@string/title_surnames"
+                android:inputType="text"
+                android:padding="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/inputName" />
+
+            <EditText
+                android:id="@+id/inputPasswordRegister"
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="32dp"
+                android:background="@drawable/round_border"
+                android:drawableStart="@drawable/ic_lock"
+                android:drawablePadding="16dp"
+                android:ems="10"
+                android:hint="@string/title_password"
+                android:inputType="textPassword"
+                android:padding="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/inputEmailRegister" />
+
+            <EditText
+                android:id="@+id/inputEmailRegister"
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="32dp"
+                android:background="@drawable/round_border"
+                android:drawableStart="@drawable/ic_email"
+                android:drawablePadding="16dp"
+                android:ems="10"
+                android:hint="@string/title_email"
+                android:inputType="textEmailAddress"
+                android:padding="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/inputSurnameRegister" />
+
+            <com.hbb20.CountryCodePicker
+                android:id="@+id/inputCountry"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
                 android:layout_marginLeft="32dp"
@@ -164,15 +143,32 @@
                 android:layout_marginEnd="32dp"
                 android:layout_marginRight="32dp"
                 android:background="@drawable/round_border"
+                android:padding="6dp"
+                app:ccp_autoDetectCountry="true"
+                app:ccp_showFullName="true"
+                app:ccp_showNameCode="false"
+                app:ccp_showPhoneCode="false" />
+
+            <EditText
+                android:id="@+id/birthDateField"
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginRight="32dp"
+                android:layout_weight="1"
+                android:background="@drawable/round_border"
+                android:clickable="true"
                 android:drawableStart="@drawable/ic_baseline_calendar_today_24"
-                android:drawablePadding="16dp"
-                android:ems="10"
-                android:hint="@string/title_birth"
+                android:drawableLeft="@drawable/ic_baseline_calendar_today_24"
+                android:focusable="false"
+                android:hint="@string/title_chkIn"
                 android:inputType="date"
-                android:padding="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/inputCountry" />
+                android:maxLines="1"
+                android:padding="16dp" />
+
 
             <Switch
                 android:id="@+id/switch1"
@@ -188,19 +184,19 @@
                 app:layout_constraintTop_toBottomOf="@+id/inputBirth" />
 
             <Button
-        android:id="@+id/btnReg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
-        android:background="@drawable/round_gb"
-        android:text="@string/title_sign_up"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:backgroundTint="@color/primaryColor"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/switch1" />
+                android:id="@+id/btnReg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="36dp"
+                android:background="@drawable/round_gb"
+                android:text="@string/title_sign_up"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:backgroundTint="@color/primaryColor"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/switch1" />
 
         </LinearLayout>
 

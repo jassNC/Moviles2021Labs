@@ -19,45 +19,8 @@ object TourDao {
 
     @JvmStatic fun main(args: Array<String>) {
         getConnection()
-        getCountries()
     }
 
-    fun getCountries(): ArrayList<Country> {
-        var stmt: Statement?
-        var resultset: ResultSet?
-        var result = ArrayList<Country>()
-
-        try {
-            stmt = conn!!.createStatement()
-            resultset = stmt!!.executeQuery("SELECT * FROM tourdb.country;")
-
-            while (resultset!!.next()) {
-                result.add(Country(resultset.getInt("ID"),resultset.getString("NAME")))
-            }
-        } catch (ex: SQLException) {
-            ex.printStackTrace()
-        }
-        println(getCountryById(5))
-        return result;
-    }
-
-    fun getCountryById(id: Int): Country{
-        var stmt: Statement?
-        var resultset: ResultSet?
-        var result = Country()
-
-        try {
-            stmt = conn!!.createStatement()
-            resultset = stmt!!.executeQuery("SELECT * FROM tourdb.country WHERE ID = ${id};")
-
-            if(resultset!!.next()) {
-                result = Country(resultset.getInt("ID"),resultset.getString("NAME"))
-            }
-        } catch (ex: SQLException) {
-            ex.printStackTrace()
-        }
-        return result;
-    }
 
     fun getCategoryById(id: Int): Category{
         var stmt: Statement?
@@ -92,7 +55,6 @@ object TourDao {
         } catch (ex: SQLException) {
             ex.printStackTrace()
         }
-        println(getCountryById(5))
         return result;
     }
 
@@ -128,7 +90,7 @@ object TourDao {
                                 resultset.getString("DESCRIPTION"), resultset.getInt("RATING"),
                                 resultset.getDate("LEAVE_DATE"), resultset.getDate("RETURN_DATE"),
                                 resultset.getDouble("PRICE"), resultset.getInt("SEATS"),
-                                this.getCountryById(resultset.getInt("COUNTRY_FK")),
+                                resultset.getString("CITY"),
                                 this.getCategoryById(resultset.getInt("CATEGORY_FK")),
                                 this.getActivitiesByTourId(resultset.getInt("ID")),
                     this.getReviewsByTourId(resultset.getInt("ID")))
@@ -150,9 +112,6 @@ object TourDao {
         if(tour.returnDate == null){
             tour.returnDate = Date(4000,0,0)
         }
-        if(tour.country.name == null){
-            tour.country.name = ""
-        }
         var lDate =java.sql.Date(tour.leaveDate!!.time)
         var rDate = java.sql.Date(tour.returnDate!!.time)
 
@@ -161,14 +120,14 @@ object TourDao {
             resultset = stmt!!.executeQuery("SELECT * FROM tourdb.TOUR T INNER JOIN tourdb.COUNTRY C"+
                     " WHERE C.ID = T.COUNTRY_FK AND T.LEAVE_DATE > STR_TO_DATE('$lDate','%Y-%m-%d')" +
                     "AND T.RETURN_DATE < STR_TO_DATE('$rDate','%Y-%m-%d') AND"+
-                    " UPPER(C.NAME) LIKE '%${tour.country.name}%'")
+                    " UPPER(C.NAME) LIKE '%${tour.city}%'")
 
             while(resultset!!.next()) {
                 result.add(Tour(resultset.getInt("ID"), resultset.getString("NAME"),
                     resultset.getString("DESCRIPTION"), resultset.getInt("RATING"),
                     resultset.getDate("LEAVE_DATE"), resultset.getDate("RETURN_DATE"),
                     resultset.getDouble("PRICE"), resultset.getInt("SEATS"),
-                    this.getCountryById(resultset.getInt("COUNTRY_FK")),
+                    resultset.getString("CITY"),
                     this.getCategoryById(resultset.getInt("CATEGORY_FK")),
                     this.getActivitiesByTourId(resultset.getInt("ID")),
                     this.getReviewsByTourId(resultset.getInt("ID")))
@@ -211,7 +170,7 @@ object TourDao {
                     resultset.getString("DESCRIPTION"), resultset.getInt("RATING"),
                     resultset.getDate("LEAVE_DATE"), resultset.getDate("RETURN_DATE"),
                     resultset.getDouble("PRICE"), resultset.getInt("SEATS"),
-                    this.getCountryById(resultset.getInt("COUNTRY_FK")),
+                    resultset.getString("CITY"),
                     this.getCategoryById(resultset.getInt("CATEGORY_FK")),
                     this.getActivitiesByTourId(resultset.getInt("ID")),
                     this.getReviewsByTourId(resultset.getInt("ID")))
@@ -229,7 +188,7 @@ object TourDao {
         println(date)
         try {
             stmt = conn!!.prepareCall("CALL tourdb.PUT_USER(${user.id},'${user.name}','${user.email}'," +
-                                        "STR_TO_DATE('$date','%Y-%m-%d'),'${user.password}','${user.country.name}')")
+                                        "STR_TO_DATE('$date','%Y-%m-%d'),'${user.password}','${user.country}')")
             stmt!!.executeQuery()
         } catch (ex: SQLException) {
             ex.printStackTrace()
@@ -249,7 +208,7 @@ object TourDao {
                 result = User(resultset.getInt("ID"),resultset.getString("NAME"),
                     resultset.getString("EMAIL"), resultset.getDate("BIRTH_DATE"),
                     resultset.getString("PASSWORD"),
-                    this.getCountryById(resultset.getInt("COUNTRY_FK"))
+                    resultset.getString("COUNTRY")
                 )
             }
         } catch (ex: SQLException) {

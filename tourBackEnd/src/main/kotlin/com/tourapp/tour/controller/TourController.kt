@@ -1,7 +1,6 @@
 package com.tourapp.tour.controller
 
 
-import com.tourapp.tour.model.Country
 import com.tourapp.tour.model.Reservation
 import com.tourapp.tour.model.Tour
 import com.tourapp.tour.model.User
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMethod
 
 import org.springframework.web.bind.annotation.RequestMapping
-import java.io.File
 
 @CrossOrigin
 @RestController
@@ -62,10 +60,6 @@ class TourController {
         return ResponseEntity.ok(service.getFavs(user));
     }
 
-    @RequestMapping(value =["/getCountries"], method = [RequestMethod.GET])
-    fun getCountries(): ResponseEntity<ArrayList<Country>>{
-        return ResponseEntity.ok(service.getCountries())
-    }
 
     @RequestMapping(value = ["/getTours"], method = [RequestMethod.GET])
     fun getTours():ResponseEntity<ArrayList<Tour>> {
