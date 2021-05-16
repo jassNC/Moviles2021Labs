@@ -25,4 +25,5 @@
     <string name="title_condition">I do not want to receive travel tips or promotions</string>
     <string name="title_country">Country</string>
     <string name="title_birth">Birth date</string>
+    <string name="title_welcome">Welcome!</string>
 </resources>
