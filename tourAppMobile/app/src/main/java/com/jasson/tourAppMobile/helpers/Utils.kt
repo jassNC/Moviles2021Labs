@@ -1,5 +1,16 @@
 package com.jasson.tourAppMobile.helpers
 
+import android.content.Context
+import android.os.Build
+import android.widget.Button
+import android.widget.Toast
+import androidx.annotation.RequiresApi
+import androidx.appcompat.widget.AppCompatEditText
+import com.jasson.tourAppMobile.R
+import com.jasson.tourAppMobile.model.User
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.io.IOException
 import java.io.InputStream
 import java.nio.charset.Charset
@@ -17,4 +28,26 @@ fun loadJSONFromAsset(inp: InputStream): String? {
         return null
     }
     return json
+}
+
+
+
+@RequiresApi(Build.VERSION_CODES.M)
+fun checkLogin(
+    email: AppCompatEditText,
+    password: AppCompatEditText,
+    btn: Button,
+    context: Context
+) {
+    if (email.text!!.matches(Regex("[\\w]+@[\\w]+.+[\\w]{2,4}")) && password.text!!.matches(
+            Regex("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@\$!.%*?&])[A-Za-z\\d@\$.!%*?&]{8,}")
+        )
+    ) {
+        btn.backgroundTintList = context.resources.getColorStateList(R.color.primaryColor, null)
+        btn.isEnabled = true
+    } else {
+        btn.backgroundTintList = context.resources.getColorStateList(R.color.disabled, null)
+        btn.isEnabled = false
+    }
+
 }

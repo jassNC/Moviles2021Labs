@@ -22,7 +22,9 @@ class TourController {
     @RequestMapping(value =["/getUser"], method = [RequestMethod.POST])
     fun getUser(@RequestBody user: User): ResponseEntity<User>{
         println(user)
-        return ResponseEntity.ok(service.getUser(user))
+        var u = service.getUser(user)
+        println(user)
+        return ResponseEntity.ok(u)
     }
 
     @RequestMapping(value = ["/putUser"], method = [RequestMethod.POST])

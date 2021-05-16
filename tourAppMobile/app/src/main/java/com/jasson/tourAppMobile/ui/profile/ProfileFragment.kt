@@ -2,6 +2,7 @@ package com.jasson.tourAppMobile.ui.profile
 
 import android.content.ClipData
 import android.content.Context
+import android.content.SharedPreferences
 import android.content.res.Resources
 import android.os.Build
 import android.os.Bundle
@@ -13,6 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatEditText
@@ -25,11 +27,12 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputEditText
 import com.jasson.tourAppMobile.R
-import com.jasson.tourAppMobile.apiConnection.Post
 import com.jasson.tourAppMobile.helpers.JsonPlaceHolderApi
 import com.jasson.tourAppMobile.helpers.SelectDateFragment
+import com.jasson.tourAppMobile.helpers.checkLogin
 import com.jasson.tourAppMobile.model.User
 import com.jasson.tourAppMobile.ui.register.RegisterFragment
+import kotlinx.android.synthetic.main.fragment_profile.*
 import org.w3c.dom.Text
 import retrofit2.Call
 import retrofit2.Callback
@@ -41,28 +44,51 @@ import java.util.*
 class ProfileFragment : Fragment() {
 
     private lateinit var profileViewModel: ProfileViewModel
+    private var user = User()
+    private var sharedPreferences: SharedPreferences? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        profileViewModel =
-            ViewModelProvider(this).get(ProfileViewModel::class.java)
+        profileViewModel = ViewModelProvider(this).get(ProfileViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_profile, container, false)
         val btnRegister: Button = root.findViewById(R.id.btnRegister)
         val btnLogin: Button = root.findViewById(R.id.btnLogin)
         val inputEmail: AppCompatEditText = root.findViewById(R.id.inputEmail)
         val inputPassword: AppCompatEditText = root.findViewById(R.id.inputPassword)
+        val topText: TextView = root.findViewById(R.id.topText)
+        val textViewAccount: TextView = root.findViewById(R.id.textViewAccount)
+        val btnLogout: Button = root.findViewById(R.id.logoutBtn)
+        val userNameView: TextView = root.findViewById(R.id.nameView)
+        sharedPreferences = activity?.getSharedPreferences("PREFERNCES", Context.MODE_PRIVATE)
+        if (sharedPreferences?.getString("Username", "Unknown") != "Unknown") {
+            setLoginVisibility(
+                btnRegister, btnLogin, inputEmail, inputPassword, userNameView,
+                topText, textViewAccount, false, root.context, btnLogout
+            )
+        }
 
         val retrofit = Retrofit.Builder().baseUrl("https://5ae448e79a28.ngrok.io/tourApi/")
             .addConverterFactory(GsonConverterFactory.create()).build()
         val jsonPlaceHolderApi = retrofit.create(
             JsonPlaceHolderApi::class.java
         )
-        var user: User
+
         btnLogin.setOnClickListener {
-            user = this.validateUser(inputEmail, inputPassword, jsonPlaceHolderApi, root.context)
+            login(
+                inputEmail, inputPassword, jsonPlaceHolderApi, btnRegister, userNameView,
+                btnLogin, topText, textViewAccount, root.context, btnLogout
+            )
+        }
+
+        btnLogout.setOnClickListener {
+            sharedPreferences?.edit()?.remove("Username")?.apply()
+            setLoginVisibility(
+                btnRegister, btnLogin, inputEmail, inputPassword, userNameView,
+                topText, textViewAccount, true, root.context, btnLogout
+            )
         }
 
         inputEmail.addTextChangedListener(object : TextWatcher {
@@ -78,7 +104,7 @@ class ProfileFragment : Fragment() {
                 s: CharSequence, start: Int,
                 before: Int, count: Int
             ) {
-                checkValues(inputEmail, inputPassword, btnLogin, root.context)
+                checkLogin(inputEmail, inputPassword, btnLogin, root.context)
 
                 inflater.inflate(R.layout.fragment_favorites, container, false)
             }
@@ -97,7 +123,7 @@ class ProfileFragment : Fragment() {
                 s: CharSequence, start: Int,
                 before: Int, count: Int
             ) {
-                checkValues(inputEmail, inputPassword, btnLogin, root.context)
+                checkLogin(inputEmail, inputPassword, btnLogin, root.context)
             }
 
         })
@@ -109,52 +135,69 @@ class ProfileFragment : Fragment() {
         return root
     }
 
-
-    @RequiresApi(Build.VERSION_CODES.M)
-    fun checkValues(
-        email: AppCompatEditText,
-        password: AppCompatEditText,
-        btn: Button,
-        context: Context
+    fun setLoginVisibility(
+        btnRegister: Button,
+        btnLogin: Button,
+        inputEmail: AppCompatEditText,
+        inputPassword: AppCompatEditText,
+        userNameView: TextView,
+        topText: TextView,
+        textViewAccount: TextView,
+        visible: Boolean,
+        context: Context,
+        btnLogout: Button
     ) {
-        if (email.text!!.matches(Regex("[\\w]+@[\\w]+.+[\\w]{2,4}")) && password.text!!.matches(
-                Regex("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@\$!.%*?&])[A-Za-z\\d@\$.!%*?&]{8,}")
-            )
-        ) {
-            btn.backgroundTintList = context.resources.getColorStateList(R.color.primaryColor, null)
-            btn.isEnabled = true
-        } else {
-            btn.backgroundTintList = context.resources.getColorStateList(R.color.disabled, null)
-            btn.isEnabled = false
-        }
-
+        btnRegister.isVisible = visible
+        btnLogin.isVisible = visible
+        inputEmail.isVisible = visible
+        inputPassword.isVisible = visible
+        textViewAccount.isVisible = visible
+        btnLogout.isVisible = !visible
+        userNameView.isVisible = !visible
+        topText.text = if (visible) context.getText(R.string.title_already)
+        else context.getText(R.string.title_welcome)
     }
 
-    fun validateUser(
+    fun login(
         inputEmail: AppCompatEditText,
         inputPassword: AppCompatEditText,
         jsonPlaceHolderApi: JsonPlaceHolderApi,
-        context: Context
-    ): User {
-        var userRes = User()
-        var user = User()
+        btnRegister: Button,
+        userNameView: TextView,
+        btnLogin: Button,
+        topText: TextView,
+        textViewAccount: TextView,
+        context: Context,
+        btnLogout: Button
+    ) {
         user.email = inputEmail.text.toString()
         user.password = inputPassword.text.toString()
-        var call = jsonPlaceHolderApi.getUser(user);
+        var call = jsonPlaceHolderApi.getUser(user)
         call.enqueue(object : Callback<User> {
             override fun onResponse(call: Call<User>, response: Response<User>) {
                 if (!response.isSuccessful) {
-                    Toast.makeText(context, "The user does not exists", Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, "The user does not exists", Toast.LENGTH_LONG)
+                        .show();
                     return
                 }
-                userRes = response.body()!!
-
+                user = response.body()!!
+                if (user.name != "") {
+                    sharedPreferences =
+                        activity?.getSharedPreferences("PREFERNCES", Context.MODE_PRIVATE)
+                    var editor = sharedPreferences?.edit()
+                    editor?.putString("Username", user.name)
+                    editor?.apply()
+                    setLoginVisibility(
+                        btnRegister, btnLogin, inputEmail, inputPassword, userNameView,
+                        topText, textViewAccount, false, context, btnLogout
+                    )
+                }
             }
+
             override fun onFailure(call: Call<User>, t: Throwable) {
                 Toast.makeText(context, "The user does not exists", Toast.LENGTH_LONG).show();
             }
         })
-
-        return userRes
     }
+
 }
