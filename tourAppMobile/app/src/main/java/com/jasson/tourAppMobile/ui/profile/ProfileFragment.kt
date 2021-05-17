@@ -66,7 +66,8 @@ class ProfileFragment : Fragment() {
         if (sharedPreferences?.getString("Username", "Unknown") != "Unknown") {
             setLoginVisibility(
                 btnRegister, btnLogin, inputEmail, inputPassword, userNameView,
-                topText, textViewAccount, false, root.context, btnLogout
+                topText, textViewAccount, false, root.context, btnLogout,
+                sharedPreferences?.getString("Username", "Unknown")!!
             )
         }
 
@@ -87,7 +88,7 @@ class ProfileFragment : Fragment() {
             sharedPreferences?.edit()?.remove("Username")?.apply()
             setLoginVisibility(
                 btnRegister, btnLogin, inputEmail, inputPassword, userNameView,
-                topText, textViewAccount, true, root.context, btnLogout
+                topText, textViewAccount, true, root.context, btnLogout, ""
             )
         }
 
@@ -145,7 +146,8 @@ class ProfileFragment : Fragment() {
         textViewAccount: TextView,
         visible: Boolean,
         context: Context,
-        btnLogout: Button
+        btnLogout: Button,
+        name: String
     ) {
         btnRegister.isVisible = visible
         btnLogin.isVisible = visible
@@ -156,6 +158,9 @@ class ProfileFragment : Fragment() {
         userNameView.isVisible = !visible
         topText.text = if (visible) context.getText(R.string.title_already)
         else context.getText(R.string.title_welcome)
+        if (!visible) {
+            userNameView.text = "${context.getText(R.string.title_name)}: $name"
+        }
     }
 
     fun login(
@@ -176,7 +181,11 @@ class ProfileFragment : Fragment() {
         call.enqueue(object : Callback<User> {
             override fun onResponse(call: Call<User>, response: Response<User>) {
                 if (!response.isSuccessful) {
-                    Toast.makeText(context, "The user does not exists", Toast.LENGTH_LONG)
+                    Toast.makeText(
+                        context,
+                        context.getText(R.string.conn_failed),
+                        Toast.LENGTH_LONG
+                    )
                         .show();
                     return
                 }
@@ -189,13 +198,25 @@ class ProfileFragment : Fragment() {
                     editor?.apply()
                     setLoginVisibility(
                         btnRegister, btnLogin, inputEmail, inputPassword, userNameView,
-                        topText, textViewAccount, false, context, btnLogout
+                        topText, textViewAccount, false, context, btnLogout, user.name
                     )
+                } else {
+                    Toast.makeText(
+                        context,
+                        context.getText(R.string.user_not_exists),
+                        Toast.LENGTH_LONG
+                    )
+                        .show()
                 }
             }
 
             override fun onFailure(call: Call<User>, t: Throwable) {
-                Toast.makeText(context, "The user does not exists", Toast.LENGTH_LONG).show();
+                Toast.makeText(
+                    context,
+                    context.getText(R.string.user_not_exists),
+                    Toast.LENGTH_LONG
+                )
+                    .show()
             }
         })
     }

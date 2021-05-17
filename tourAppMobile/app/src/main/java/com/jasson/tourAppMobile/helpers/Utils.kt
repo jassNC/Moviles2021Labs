@@ -39,7 +39,7 @@ fun checkLogin(
     btn: Button,
     context: Context
 ) {
-    if (email.text!!.matches(Regex("[\\w]+@[\\w]+.+[\\w]{2,4}")) && password.text!!.matches(
+    if (email.text!!.matches(Regex("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}\$")) && password.text!!.matches(
             Regex("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@\$!.%*?&])[A-Za-z\\d@\$.!%*?&]{8,}")
         )
     ) {
@@ -50,4 +50,15 @@ fun checkLogin(
         btn.isEnabled = false
     }
 
+}
+
+fun formatDate(date: String):String{
+    val dateArr = date.split("/").toTypedArray()
+    if(dateArr[0].length==1){
+        dateArr[0]="0${dateArr[0]}"
+    }
+    if(dateArr[1].length==1){
+        dateArr[1]="0${dateArr[1]}"
+    }
+    return "${dateArr[2]}-${dateArr[1]}-${dateArr[0]}"
 }

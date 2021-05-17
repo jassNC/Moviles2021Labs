@@ -11,16 +11,28 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.hbb20.CountryCodePicker
 import com.jasson.tourAppMobile.R
+import com.jasson.tourAppMobile.helpers.JsonPlaceHolderApi
 import com.jasson.tourAppMobile.helpers.SelectDateFragment
+import com.jasson.tourAppMobile.helpers.formatDate
+import com.jasson.tourAppMobile.model.User
 import com.jasson.tourAppMobile.ui.profile.ProfileViewModel
+import kotlinx.android.synthetic.main.fragment_register.view.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import java.util.*
+import kotlin.collections.ArrayList
 
 class RegisterFragment : Fragment(R.layout.fragment_register) {
 
@@ -46,7 +58,22 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
         //birthDateField.text.isEmpty()
         //inputCountry.selectedCountryName
 
-        birthDateField.setOnClickListener{
+        val retrofit = Retrofit.Builder().baseUrl("https://5ae448e79a28.ngrok.io/tourApi/")
+            .addConverterFactory(GsonConverterFactory.create()).build()
+        val jsonPlaceHolderApi = retrofit.create(
+            JsonPlaceHolderApi::class.java
+        )
+
+        btnReg.setOnClickListener {
+            register(
+                inputName, inputSurnames, inputEmail, inputPassword, btnReg,
+                inputCountry, birthDateField, root.context, jsonPlaceHolderApi
+            )
+            val action = RegisterFragmentDirections.actionRegisterFragmentToNavigationProfile()
+            findNavController().navigate(action)
+        }
+
+        birthDateField.setOnClickListener {
             val newFragment: DialogFragment = SelectDateFragment(birthDateField)
             newFragment.show(parentFragmentManager, "DatePicker")
         }
@@ -64,7 +91,14 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                 s: CharSequence, start: Int,
                 before: Int, count: Int
             ) {
-                checkValues(inputName, inputSurnames, inputEmail, inputPassword, btnReg, root.context)
+                checkValues(
+                    inputName,
+                    inputSurnames,
+                    inputEmail,
+                    inputPassword,
+                    btnReg,
+                    root.context
+                )
             }
 
         })
@@ -82,7 +116,14 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                 s: CharSequence, start: Int,
                 before: Int, count: Int
             ) {
-                checkValues(inputName, inputSurnames, inputEmail, inputPassword, btnReg, root.context)
+                checkValues(
+                    inputName,
+                    inputSurnames,
+                    inputEmail,
+                    inputPassword,
+                    btnReg,
+                    root.context
+                )
             }
 
         })
@@ -100,7 +141,14 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                 s: CharSequence, start: Int,
                 before: Int, count: Int
             ) {
-                checkValues(inputName, inputSurnames, inputEmail, inputPassword, btnReg, root.context)
+                checkValues(
+                    inputName,
+                    inputSurnames,
+                    inputEmail,
+                    inputPassword,
+                    btnReg,
+                    root.context
+                )
             }
 
         })
@@ -118,7 +166,14 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                 s: CharSequence, start: Int,
                 before: Int, count: Int
             ) {
-                checkValues(inputName, inputSurnames, inputEmail, inputPassword, btnReg, root.context)
+                checkValues(
+                    inputName,
+                    inputSurnames,
+                    inputEmail,
+                    inputPassword,
+                    btnReg,
+                    root.context
+                )
             }
 
         })
@@ -135,7 +190,9 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
         btn: Button,
         context: Context
     ) {
-        if (name.text!!.matches(Regex("[A-Z]+[a-z]+[a-z]")) && surnames.text!!.matches(Regex("[A-Z]+[a-z]")) && email.text!!.matches(Regex("[\\w]+@[\\w]+.+[\\w]{2,4}")) && password.text!!.matches(
+        if (name.text.isNotEmpty() && surnames.text.isNotEmpty() &&
+            email.text!!.matches(Regex("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}\$")) &&
+            password.text!!.matches(
                 Regex("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@\$!.%*?&])[A-Za-z\\d@\$.!%*?&]{8,}")
             )
         ) {
@@ -146,5 +203,55 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
             btn.isEnabled = false
         }
 
+    }
+
+    fun register(
+        name: EditText,
+        surnames: EditText,
+        email: AppCompatEditText,
+        password: AppCompatEditText,
+        btn: Button,
+        inputCountry: CountryCodePicker,
+        birthDateField: EditText,
+        context: Context,
+        jsonPlaceHolderApi: JsonPlaceHolderApi
+    ) {
+        val user = User(
+            1,
+            "${name.text} ${surnames.text}",
+            email.text.toString(),
+            formatDate(birthDateField.text.toString()),
+            password.text.toString(),
+            inputCountry.defaultCountryName,
+            ArrayList()
+        )
+        var call = jsonPlaceHolderApi.putUser(user)
+        call.enqueue(object : Callback<Boolean> {
+            override fun onResponse(call: Call<Boolean>, response: Response<Boolean>) {
+                if (!response.isSuccessful) {
+                    Toast.makeText(
+                        context,
+                        context.getText(R.string.conn_failed),
+                        Toast.LENGTH_LONG
+                    )
+                        .show();
+                    return
+                }
+                if (response.body()!!) {
+                    Toast.makeText(
+                        context,
+                        context.getText(R.string.user_created),
+                        Toast.LENGTH_LONG
+                    )
+                        .show();
+                }
+
+            }
+
+            override fun onFailure(call: Call<Boolean>, t: Throwable) {
+                Toast.makeText(context, context.getText(R.string.conn_failed), Toast.LENGTH_LONG)
+                    .show();
+            }
+        })
     }
 }

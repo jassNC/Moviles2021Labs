@@ -21,12 +21,16 @@
     <string name="title_have_account">You do not have an account?</string>
     <string name="title_sign_up">Sign up</string>
     <string name="title_name">Name</string>
-    <string name="title_surnames">Surnames</string>
+    <string name="title_surnames">Surname</string>
     <string name="title_condition">I do not want to receive travel tips or promotions</string>
     <string name="title_country">Country</string>
     <string name="title_birth">Birth date</string>
     <string name="title_welcome">Welcome!</string>
     <string name="title_logout">Log out</string>
     <string name="title_user_logged">User logged: </string>
-    <string name="title_password_indications">The password must contain eight characters, at least one lowercase letter and two special characters (@$!.%*?&amp;) example: Abcd7498?* (The order of the characters does not affect). All name and surnames must begin with a capital letter.</string>
+    <string name="title_password_indications">The password must contain eight characters, at least one lowercase letter and one special character (@$!.%*?&amp;) example: Abcd7498?* (The order of the characters does not affect).</string>
+    <string name="user_created">User created successfully, please log in</string>
+    <string name="user_not_created">The user could not be created, please verify your data</string>
+    <string name="user_not_exists">The selected user does not exist</string>
+    <string name="conn_failed">The connection with the server has failed</string>
 </resources>

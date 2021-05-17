@@ -185,9 +185,8 @@ object TourDao {
     fun putUser(user: User): Boolean{
         var stmt: Statement?
         var date = java.sql.Date(user.birthDate.time)
-        println(date)
         try {
-            stmt = conn!!.prepareCall("CALL tourdb.PUT_USER(${user.id},'${user.name}','${user.email}'," +
+            stmt = conn!!.prepareCall("CALL tourdb.PUT_USER('${user.name}','${user.email}'," +
                                         "STR_TO_DATE('$date','%Y-%m-%d'),'${user.password}','${user.country}')")
             stmt!!.executeQuery()
         } catch (ex: SQLException) {
