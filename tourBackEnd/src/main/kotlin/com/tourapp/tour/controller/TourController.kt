@@ -38,19 +38,19 @@ class TourController {
         return ResponseEntity.ok(service.getLinks(tour));
     }
 
-    @RequestMapping(value = ["/putReservation"], method = [RequestMethod.POST])
+    @RequestMapping(value = ["/putReservations"], method = [RequestMethod.PUT])
     fun putReservation(@RequestBody reservation: Reservation):ResponseEntity<Boolean> {
         println(reservation)
         return ResponseEntity.ok(service.putReservation(reservation));
     }
 
-    @RequestMapping(value = ["/addFav"], method = [RequestMethod.POST])
+    @RequestMapping(value = ["/addFavs"], method = [RequestMethod.POST])
     fun addFav(@RequestBody user: User):ResponseEntity<Boolean> {
         println(user)
         return ResponseEntity.ok(service.addFav(user));
     }
 
-    @RequestMapping(value = ["/removeFav"], method = [RequestMethod.POST])
+    @RequestMapping(value = ["/removeFavs"], method = [RequestMethod.DELETE])
     fun removeFav(@RequestBody user: User):ResponseEntity<Boolean> {
         println(user)
         return ResponseEntity.ok(service.removeFav(user));
@@ -74,7 +74,7 @@ class TourController {
         return ResponseEntity.ok(service.getToursFiltered(tour))
     }
 
-    @RequestMapping(value = ["/getTourById"], method = [RequestMethod.POST])
+    @RequestMapping(value = ["/getToursById"], method = [RequestMethod.POST])
     fun getTourById(@RequestBody tour: Tour):ResponseEntity<Tour> {
         println(tour)
         return ResponseEntity.ok(service.getTourById(tour))
