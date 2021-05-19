@@ -159,6 +159,4 @@ insert into REVIEW (BODY, TOUR_FK) VALUES ('Fosiles de dinosaurio increibles',5)
 insert into REVIEW (BODY, TOUR_FK) VALUES ('Muy buena experiencia',5);
 
 select * from user;
-insert into USER VALUES ('Jasson','jason',SYSDATE(),'lol',0,'CR');
-
 

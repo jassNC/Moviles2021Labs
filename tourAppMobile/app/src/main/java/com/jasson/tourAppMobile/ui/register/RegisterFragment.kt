@@ -58,7 +58,7 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
         //birthDateField.text.isEmpty()
         //inputCountry.selectedCountryName
 
-        val retrofit = Retrofit.Builder().baseUrl("https://5ae448e79a28.ngrok.io/tourApi/")
+        val retrofit = Retrofit.Builder().baseUrl("https://0f20f766f79f.ngrok.io/tourApi/")
             .addConverterFactory(GsonConverterFactory.create()).build()
         val jsonPlaceHolderApi = retrofit.create(
             JsonPlaceHolderApi::class.java
@@ -222,7 +222,7 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
             email.text.toString(),
             formatDate(birthDateField.text.toString()),
             password.text.toString(),
-            inputCountry.defaultCountryName,
+            inputCountry.selectedCountryName,
             ArrayList()
         )
         var call = jsonPlaceHolderApi.putUser(user)
