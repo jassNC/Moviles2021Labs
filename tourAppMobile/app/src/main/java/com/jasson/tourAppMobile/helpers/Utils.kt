@@ -60,5 +60,6 @@ fun formatDate(date: String):String{
     if(dateArr[1].length==1){
         dateArr[1]="0${dateArr[1]}"
     }
-    return "${dateArr[2]}-${dateArr[1]}-${dateArr[0]}"
+    var p = "${dateArr[2]}-${dateArr[0]}-${dateArr[1]}"
+    return p
 }

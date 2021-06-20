@@ -19,72 +19,65 @@ import org.springframework.web.bind.annotation.RequestMapping
 class TourController {
     val service = TourService()
 
-    @RequestMapping(value =["/getUser"], method = [RequestMethod.POST])
-    fun getUser(@RequestBody user: User): ResponseEntity<User>{
-        println(user)
-        var u = service.getUser(user)
-        println(user)
-        return ResponseEntity.ok(u)
+    @RequestMapping(value =["/users"], method = [RequestMethod.GET])
+    fun getUsers():ResponseEntity<ArrayList<User>>{
+        return ResponseEntity.ok(service.getUsers())
     }
 
-    @RequestMapping(value = ["/putUser"], method = [RequestMethod.PUT])
+    @RequestMapping(value =["/users"], method = [RequestMethod.POST])
+    fun getUser(@RequestBody user: User): ResponseEntity<User>{
+        return ResponseEntity.ok(service.getUser(user))
+    }
+
+    @RequestMapping(value = ["/users"], method = [RequestMethod.PUT])
     fun putUser(@RequestBody user: User):ResponseEntity<Boolean> {
-        println(user)
         return ResponseEntity.ok(service.registerUser(user));
     }
 
-    @RequestMapping(value = ["/getLinks"], method = [RequestMethod.POST])
+    @RequestMapping(value = ["/links"], method = [RequestMethod.POST])
     fun getLinks(@RequestBody tour: Tour):ResponseEntity<ArrayList<String>> {
         return ResponseEntity.ok(service.getLinks(tour));
     }
 
-    @RequestMapping(value = ["/putReservations"], method = [RequestMethod.PUT])
+    @RequestMapping(value = ["/reservations"], method = [RequestMethod.PUT])
     fun putReservation(@RequestBody reservation: Reservation):ResponseEntity<Boolean> {
-        println(reservation)
         return ResponseEntity.ok(service.putReservation(reservation));
     }
 
-    @RequestMapping(value = ["/addFavs"], method = [RequestMethod.POST])
+    @RequestMapping(value = ["/favotites"], method = [RequestMethod.POST])
     fun addFav(@RequestBody user: User):ResponseEntity<Boolean> {
-        println(user)
         return ResponseEntity.ok(service.addFav(user));
     }
 
-    @RequestMapping(value = ["/removeFavs"], method = [RequestMethod.DELETE])
+    @RequestMapping(value = ["/favorites"], method = [RequestMethod.DELETE])
     fun removeFav(@RequestBody user: User):ResponseEntity<Boolean> {
-        println(user)
         return ResponseEntity.ok(service.removeFav(user));
     }
 
-    @RequestMapping(value = ["/getFavs"], method = [RequestMethod.POST])
+    @RequestMapping(value = ["/favorites"], method = [RequestMethod.POST])
     fun getFavs(@RequestBody user: User): ResponseEntity<ArrayList<Int>>{
-        println("dasaddad")
         return ResponseEntity.ok(service.getFavs(user));
     }
 
 
-    @RequestMapping(value = ["/getTours"], method = [RequestMethod.GET])
+    @RequestMapping(value = ["/tours"], method = [RequestMethod.GET])
     fun getTours():ResponseEntity<ArrayList<Tour>> {
         return ResponseEntity.ok(service.getTours())
     }
 
-    @RequestMapping(value = ["/getToursFiltered"], method = [RequestMethod.POST])
+    @RequestMapping(value = ["/tours"], method = [RequestMethod.POST])
     fun getToursFiltered(@RequestBody tour: Tour):ResponseEntity<ArrayList<Tour>> {
-        println(tour)
+        println(tour.checkIn)
+        println(tour.checkOut)
         return ResponseEntity.ok(service.getToursFiltered(tour))
     }
 
-    @RequestMapping(value = ["/getToursById"], method = [RequestMethod.POST])
+    /*
+    @RequestMapping(value = ["/tours"], method = [RequestMethod.POST])
     fun getTourById(@RequestBody tour: Tour):ResponseEntity<Tour> {
-        println(tour)
         return ResponseEntity.ok(service.getTourById(tour))
-    }
+    }*/
 
 
 
 }
-
-data class HelloResponse(
-    val message: String,
-    val name: String
-)

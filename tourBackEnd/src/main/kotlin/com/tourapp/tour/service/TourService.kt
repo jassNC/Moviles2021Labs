@@ -7,6 +7,10 @@ import kotlin.collections.ArrayList
 
 class TourService {
 
+    fun getUsers(): ArrayList<User>{
+        return TourDao.getUsers();
+    }
+
     fun registerUser(user: User):Boolean{
         return TourDao.putUser(user);
     }

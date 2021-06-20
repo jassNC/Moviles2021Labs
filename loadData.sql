@@ -19,11 +19,11 @@ END
 DROP PROCEDURE IF EXISTS PUT_USER;
 DELIMITER //
 CREATE PROCEDURE PUT_USER
-(IN P_ID INT, IN P_NAME VARCHAR(45), IN P_EMAIL VARCHAR(45), IN P_BIRTH_DATE DATE, 
+(IN P_NAME VARCHAR(45), IN P_EMAIL VARCHAR(45), IN P_BIRTH_DATE DATE, 
 IN P_PASSWORD VARCHAR(45), IN P_COUNTRY VARCHAR(45))
 BEGIN
-	INSERT INTO USER (ID,NAME, EMAIL, BIRTH_DATE, PASSWORD, COUNTRY) 
-				VALUES (P_ID, P_NAME, P_EMAIL, P_BIRTH_DATE, P_PASSWORD, P_COUNTRY);
+	INSERT INTO USER (NAME, EMAIL, BIRTH_DATE, PASSWORD, COUNTRY) 
+				VALUES (P_NAME, P_EMAIL, P_BIRTH_DATE, P_PASSWORD, P_COUNTRY);
 END 
 //DELIMITER ;
 
@@ -86,50 +86,25 @@ INSERT INTO CATEGORY (NAME) VALUES ("Historico");
 INSERT INTO CATEGORY (NAME) VALUES ("Recreativo");
 select * from category;
 
-INSERT INTO TOUR (NAME, DESCRIPTION, RATING, LEAVE_DATE, RETURN_DATE, PRICE, SEATS, CATEGORY_FK,CITY) 
+INSERT INTO TOUR (NAME, DESCRIPTION, RATING, LEAVE_DATE, RETURN_DATE, PRICE, SEATS, CATEGORY_FK,CITY, IMAGE, DURATION) 
 VALUES('Descubre las piramides de Mexico','Ve a las mas famosas piramides de mexico y descubre sus secretos',
-5,STR_TO_DATE('20-06-2021','%d-%m-%Y'),STR_TO_DATE('24-06-2021','%d-%m-%Y'),200,40,2,'CDMX');
-INSERT INTO IMAGE (TOUR_FK, LINK) VALUES (1,'http://localhost:3000/images/tourImg/piramideMexico1.jpg');
-INSERT INTO IMAGE (TOUR_FK, LINK) VALUES (1,'http://localhost:3000/images/tourImg/piramideMexico2.jpg');
-INSERT INTO IMAGE (TOUR_FK, LINK) VALUES (1,'http://localhost:3000/images/tourImg/piramideMexico3.jpg');
-INSERT INTO IMAGE (TOUR_FK, LINK) VALUES (1,'http://localhost:3000/images/tourImg/piramideMexico4.jpg');
-INSERT INTO IMAGE (TOUR_FK, LINK) VALUES (1,'http://localhost:3000/images/tourImg/piramideMexico5.jpg');
+5,STR_TO_DATE('20-06-2021','%d-%m-%Y'),STR_TO_DATE('24-06-2021','%d-%m-%Y'),200,40,2,'CDMX','https://ichef.bbci.co.uk/news/640/cpsprodpb/16D7C/production/_102946539_gettyimages-909755746.jpg',1.3);
 
-INSERT INTO TOUR (NAME, DESCRIPTION, RATING, LEAVE_DATE, RETURN_DATE, PRICE, SEATS, CATEGORY_FK,CITY) 
+INSERT INTO TOUR (NAME, DESCRIPTION, RATING, LEAVE_DATE, RETURN_DATE, PRICE, SEATS, CATEGORY_FK,CITY, IMAGE,DURATION) 
 VALUES('Descansa en las playas de Costa Rica','Visita las hermosas playas del pais centroamericano',
-5,STR_TO_DATE('10-05-2021','%d-%m-%Y'),STR_TO_DATE('21-05-2021','%d-%m-%Y'),500,30,1,'Jaco');
-INSERT INTO IMAGE (TOUR_FK, LINK) VALUES (2,'http://localhost:3000/images/tourImg/playaCR1.jpg');
-INSERT INTO IMAGE (TOUR_FK, LINK) VALUES (2,'http://localhost:3000/images/tourImg/playaCR2.jpg');
-INSERT INTO IMAGE (TOUR_FK, LINK) VALUES (2,'http://localhost:3000/images/tourImg/playaCR3.jpg');
-INSERT INTO IMAGE (TOUR_FK, LINK) VALUES (2,'http://localhost:3000/images/tourImg/playaCR4.jpg');
-INSERT INTO IMAGE (TOUR_FK, LINK) VALUES (2,'http://localhost:3000/images/tourImg/playaCR5.jpg');
+5,STR_TO_DATE('10-05-2021','%d-%m-%Y'),STR_TO_DATE('21-05-2021','%d-%m-%Y'),500,30,1,'Jaco','https://upload.wikimedia.org/wikipedia/commons/a/ab/Jaco_Beach_Costa_Rica.jpg',4.3);
 
-INSERT INTO TOUR (NAME, DESCRIPTION, RATING, LEAVE_DATE, RETURN_DATE, PRICE, SEATS, CATEGORY_FK,CITY) 
+INSERT INTO TOUR (NAME, DESCRIPTION, RATING, LEAVE_DATE, RETURN_DATE, PRICE, SEATS, CATEGORY_FK,CITY, IMAGE,DURATION) 
 VALUES('Increibles volcanes en Costa Rica','Visita los preciosos y antiguos volcanes del pais centroamericano',
-3,STR_TO_DATE('18-07-2021','%d-%m-%Y'),STR_TO_DATE('21-07-2021','%d-%m-%Y'),150,25,1,'Cartago');
-INSERT INTO IMAGE (TOUR_FK, LINK) VALUES (3,'http://localhost:3000/images/tourImg/volcanesCR1.jpg');
-INSERT INTO IMAGE (TOUR_FK, LINK) VALUES (3,'http://localhost:3000/images/tourImg/volcanesCR2.jpg');
-INSERT INTO IMAGE (TOUR_FK, LINK) VALUES (3,'http://localhost:3000/images/tourImg/volcanesCR3.jpg');
-INSERT INTO IMAGE (TOUR_FK, LINK) VALUES (3,'http://localhost:3000/images/tourImg/volcanesCR4.jpg');
-INSERT INTO IMAGE (TOUR_FK, LINK) VALUES (3,'http://localhost:3000/images/tourImg/volcanesCR5.jpg');
+3,STR_TO_DATE('18-07-2021','%d-%m-%Y'),STR_TO_DATE('21-07-2021','%d-%m-%Y'),150,25,1,'Cartago','https://www.govisitcostarica.co.cr/images/photos/full-irazu-volcano-crater.jpg',5.3);
 
-INSERT INTO TOUR (NAME, DESCRIPTION, RATING, LEAVE_DATE, RETURN_DATE, PRICE, SEATS, CATEGORY_FK,CITY) 
+INSERT INTO TOUR (NAME, DESCRIPTION, RATING, LEAVE_DATE, RETURN_DATE, PRICE, SEATS, CATEGORY_FK,CITY, IMAGE,DURATION) 
 VALUES('Preciosas islas en Tailandia!','Visita y disfruta de las playas de este salvaje pais',
-4,STR_TO_DATE('05-06-2021','%d-%m-%Y'),STR_TO_DATE('12-06-2021','%d-%m-%Y'),700,50,1,'Taila');
-INSERT INTO IMAGE (TOUR_FK, LINK) VALUES (4,'http://localhost:3000/images/tourImg/tailandia1.jpg');
-INSERT INTO IMAGE (TOUR_FK, LINK) VALUES (4,'http://localhost:3000/images/tourImg/tailandia2.jpg');
-INSERT INTO IMAGE (TOUR_FK, LINK) VALUES (4,'http://localhost:3000/images/tourImg/tailandia3.jpg');
-INSERT INTO IMAGE (TOUR_FK, LINK) VALUES (4,'http://localhost:3000/images/tourImg/tailandia4.jpg');
-INSERT INTO IMAGE (TOUR_FK, LINK) VALUES (4,'http://localhost:3000/images/tourImg/tailandia5.jpg');
+4,STR_TO_DATE('05-06-2021','%d-%m-%Y'),STR_TO_DATE('12-06-2021','%d-%m-%Y'),700,50,1,'Hua Hin','https://upload.wikimedia.org/wikipedia/commons/5/53/Hua_Hin_hotels.jpg',9.2);
 
-INSERT INTO TOUR (NAME, DESCRIPTION, RATING, LEAVE_DATE, RETURN_DATE, PRICE, SEATS, CATEGORY_FK,CITY) 
+INSERT INTO TOUR (NAME, DESCRIPTION, RATING, LEAVE_DATE, RETURN_DATE, PRICE, SEATS, CATEGORY_FK,CITY, IMAGE,DURATION) 
 VALUES('Los mejores museos de USA','Visita y aprende en los mejores museos de Nueva York',
-2,STR_TO_DATE('07-08-2021','%d-%m-%Y'),STR_TO_DATE('08-08-2021','%d-%m-%Y'),220,80,3,'NY');
-INSERT INTO IMAGE (TOUR_FK, LINK) VALUES (5,'http://localhost:3000/images/tourImg/museoNY5.jpg');
-INSERT INTO IMAGE (TOUR_FK, LINK) VALUES (5,'http://localhost:3000/images/tourImg/museoNY5.jpg');
-INSERT INTO IMAGE (TOUR_FK, LINK) VALUES (5,'http://localhost:3000/images/tourImg/museoNY5.jpg');
-INSERT INTO IMAGE (TOUR_FK, LINK) VALUES (5,'http://localhost:3000/images/tourImg/museoNY5.jpg');
-INSERT INTO IMAGE (TOUR_FK, LINK) VALUES (5,'http://localhost:3000/images/tourImg/museoNY5.jpg');
+2,STR_TO_DATE('07-08-2021','%d-%m-%Y'),STR_TO_DATE('08-08-2021','%d-%m-%Y'),220,80,3,'NY','https://upload.wikimedia.org/wikipedia/commons/4/47/New_york_times_square-terabass.jpg',13.1);
 
 INSERT INTO FEATURE (TOUR_FK, ACTIVITY_FK) VALUES (1,10);
 INSERT INTO FEATURE (TOUR_FK, ACTIVITY_FK) VALUES (1,9);
@@ -157,6 +132,3 @@ insert into REVIEW (BODY, TOUR_FK) VALUES ('Geniales vistas',4);
 insert into REVIEW (BODY, TOUR_FK) VALUES ('Precioso!',4);
 insert into REVIEW (BODY, TOUR_FK) VALUES ('Fosiles de dinosaurio increibles',5);
 insert into REVIEW (BODY, TOUR_FK) VALUES ('Muy buena experiencia',5);
-
-select * from user;
-

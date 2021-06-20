@@ -1,12 +1,23 @@
 package com.jasson.tourAppMobile.ui.register
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.jasson.tourAppMobile.model.User
+import com.jasson.tourAppMobile.model.repositories.UserRepository
 
 class RegisterViewModel : ViewModel() {
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is notifications Fragment"
+
+    var logged = MutableLiveData<Boolean>()
+    var status = MutableLiveData<String>()
+    var userRepository = UserRepository()
+
+    init{
+        this.logged = userRepository.logged
+        this.status = userRepository.status
     }
-    val text: LiveData<String> = _text
+
+    fun registerUser(user: User){
+        userRepository.registerUser(user)
+    }
+
 }

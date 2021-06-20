@@ -33,4 +33,8 @@
     <string name="user_not_created">The user could not be created, please verify your data</string>
     <string name="user_not_exists">The selected user does not exist</string>
     <string name="conn_failed">The connection with the server has failed</string>
+    <string name="title_duration">Duration:</string>
+    <string name="price">$</string>
+    <string name="reviews">reviews</string>
+    <string name="hours">hours</string>
 </resources>

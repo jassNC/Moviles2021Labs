@@ -1,9 +1,7 @@
 package com.jasson.tourAppMobile.ui.profile
 
-import android.content.ClipData
 import android.content.Context
 import android.content.SharedPreferences
-import android.content.res.Resources
 import android.os.Build
 import android.os.Bundle
 import android.text.Editable
@@ -13,47 +11,43 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.view.isVisible
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.textfield.TextInputEditText
 import com.jasson.tourAppMobile.R
-import com.jasson.tourAppMobile.helpers.JsonPlaceHolderApi
-import com.jasson.tourAppMobile.helpers.SelectDateFragment
+import com.jasson.tourAppMobile.helpers.TourAppApi
 import com.jasson.tourAppMobile.helpers.checkLogin
 import com.jasson.tourAppMobile.model.User
-import com.jasson.tourAppMobile.ui.register.RegisterFragment
-import kotlinx.android.synthetic.main.fragment_profile.*
-import org.w3c.dom.Text
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.util.*
 
 class ProfileFragment : Fragment() {
-
-    private lateinit var profileViewModel: ProfileViewModel
-    private var user = User()
+    private val profileViewModel: ProfileViewModel by viewModels()
     private var sharedPreferences: SharedPreferences? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        sharedPreferences = activity?.getSharedPreferences("PREFERENCES", Context.MODE_PRIVATE)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        profileViewModel = ViewModelProvider(this).get(ProfileViewModel::class.java)
+        super.onCreate(savedInstanceState)
         val root = inflater.inflate(R.layout.fragment_profile, container, false)
+
         val btnRegister: Button = root.findViewById(R.id.btnRegister)
         val btnLogin: Button = root.findViewById(R.id.btnLogin)
         val inputEmail: AppCompatEditText = root.findViewById(R.id.inputEmail)
@@ -62,35 +56,38 @@ class ProfileFragment : Fragment() {
         val textViewAccount: TextView = root.findViewById(R.id.textViewAccount)
         val btnLogout: Button = root.findViewById(R.id.logoutBtn)
         val userNameView: TextView = root.findViewById(R.id.nameView)
-        sharedPreferences = activity?.getSharedPreferences("PREFERNCES", Context.MODE_PRIVATE)
-        if (sharedPreferences?.getString("Username", "Unknown") != "Unknown") {
+
+        profileViewModel.user.observe(viewLifecycleOwner, {
+            if (profileViewModel.user.value!!.name != "") {
+                Toast.makeText(root.context, R.string.title_welcome, Toast.LENGTH_SHORT).show()
+                val editor = sharedPreferences?.edit()
+                editor?.putString("username", profileViewModel.user.value!!.name)
+                editor?.apply()
+                val action = ProfileFragmentDirections.actionNavigationProfileToNavigationExplore()
+                findNavController().navigate(action)
+            }
+            if (profileViewModel.status.value=="notFound"){
+                Toast.makeText(root.context, R.string.user_not_exists, Toast.LENGTH_SHORT).show()
+            }else if(profileViewModel.status.value=="connError"){
+                Toast.makeText(root.context, R.string.conn_failed, Toast.LENGTH_SHORT).show()
+            }
+            var username = sharedPreferences?.getString("username", "unknown")
             setLoginVisibility(
                 btnRegister, btnLogin, inputEmail, inputPassword, userNameView,
-                topText, textViewAccount, false, root.context, btnLogout,
-                sharedPreferences?.getString("Username", "Unknown")!!
+                topText, textViewAccount, username == "unknown", root.context, btnLogout,
+                username!!
             )
-        }
-
-        val retrofit = Retrofit.Builder().baseUrl("https://0f20f766f79f.ngrok.io/tourApi/")
-            .addConverterFactory(GsonConverterFactory.create()).build()
-        val jsonPlaceHolderApi = retrofit.create(
-            JsonPlaceHolderApi::class.java
-        )
+        })
 
         btnLogin.setOnClickListener {
-            login(
-                inputEmail, inputPassword, jsonPlaceHolderApi, btnRegister, userNameView,
-                btnLogin, topText, textViewAccount, root.context, btnLogout
-            )
+            login(inputEmail, inputPassword)
         }
 
         btnLogout.setOnClickListener {
-            sharedPreferences?.edit()?.remove("Username")?.apply()
-            setLoginVisibility(
-                btnRegister, btnLogin, inputEmail, inputPassword, userNameView,
-                topText, textViewAccount, true, root.context, btnLogout, ""
-            )
+            sharedPreferences?.edit()?.remove("username")?.apply()
+            profileViewModel.logout()
         }
+
 
         inputEmail.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {}
@@ -106,7 +103,6 @@ class ProfileFragment : Fragment() {
                 before: Int, count: Int
             ) {
                 checkLogin(inputEmail, inputPassword, btnLogin, root.context)
-
                 inflater.inflate(R.layout.fragment_favorites, container, false)
             }
         })
@@ -165,60 +161,12 @@ class ProfileFragment : Fragment() {
 
     fun login(
         inputEmail: AppCompatEditText,
-        inputPassword: AppCompatEditText,
-        jsonPlaceHolderApi: JsonPlaceHolderApi,
-        btnRegister: Button,
-        userNameView: TextView,
-        btnLogin: Button,
-        topText: TextView,
-        textViewAccount: TextView,
-        context: Context,
-        btnLogout: Button
+        inputPassword: AppCompatEditText
     ) {
+        var user = User();
         user.email = inputEmail.text.toString()
         user.password = inputPassword.text.toString()
-        var call = jsonPlaceHolderApi.getUser(user)
-        call.enqueue(object : Callback<User> {
-            override fun onResponse(call: Call<User>, response: Response<User>) {
-                if (!response.isSuccessful) {
-                    Toast.makeText(
-                        context,
-                        context.getText(R.string.conn_failed),
-                        Toast.LENGTH_LONG
-                    )
-                        .show();
-                    return
-                }
-                user = response.body()!!
-                if (user.name != "") {
-                    sharedPreferences =
-                        activity?.getSharedPreferences("PREFERNCES", Context.MODE_PRIVATE)
-                    var editor = sharedPreferences?.edit()
-                    editor?.putString("Username", user.name)
-                    editor?.apply()
-                    setLoginVisibility(
-                        btnRegister, btnLogin, inputEmail, inputPassword, userNameView,
-                        topText, textViewAccount, false, context, btnLogout, user.name
-                    )
-                } else {
-                    Toast.makeText(
-                        context,
-                        context.getText(R.string.user_not_exists),
-                        Toast.LENGTH_LONG
-                    )
-                        .show()
-                }
-            }
-
-            override fun onFailure(call: Call<User>, t: Throwable) {
-                Toast.makeText(
-                    context,
-                    context.getText(R.string.user_not_exists),
-                    Toast.LENGTH_LONG
-                )
-                    .show()
-            }
-        })
+        this.profileViewModel.loginUser(user)
     }
 
 }

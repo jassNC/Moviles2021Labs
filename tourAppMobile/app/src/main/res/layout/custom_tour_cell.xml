@@ -100,6 +100,22 @@
             app:layout_constraintBottom_toTopOf="@+id/textViewPrice"
             app:layout_constraintStart_toStartOf="@+id/textViewPrice" />
 
+        <TextView
+            android:id="@+id/durationTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:text="@string/title_duration"
+            app:layout_constraintStart_toStartOf="@+id/textViewAccount"
+            app:layout_constraintTop_toBottomOf="@+id/ratingBar" />
+
+        <TextView
+            android:id="@+id/durationText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@+id/textViewAccount"
+            app:layout_constraintTop_toBottomOf="@+id/durationTextView" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

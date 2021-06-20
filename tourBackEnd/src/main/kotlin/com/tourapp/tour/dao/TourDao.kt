@@ -2,9 +2,7 @@ package com.tourapp.tour.dao
 
 import com.tourapp.tour.model.*
 import java.sql.*
-import java.time.LocalDate
 
-import java.time.format.DateTimeFormatter
 import java.util.*
 import java.util.Date
 import kotlin.collections.ArrayList
@@ -88,9 +86,10 @@ object TourDao {
             while(resultset!!.next()) {
                 result.add(Tour(resultset.getInt("ID"), resultset.getString("NAME"),
                                 resultset.getString("DESCRIPTION"), resultset.getInt("RATING"),
-                                resultset.getDate("LEAVE_DATE"), resultset.getDate("RETURN_DATE"),
+                                resultset.getString("LEAVE_DATE"), resultset.getString("RETURN_DATE"),
+                                resultset.getFloat("DURATION"),
                                 resultset.getDouble("PRICE"), resultset.getInt("SEATS"),
-                                resultset.getString("CITY"),
+                                resultset.getString("CITY"), resultset.getString("IMAGE"),
                                 this.getCategoryById(resultset.getInt("CATEGORY_FK")),
                                 this.getActivitiesByTourId(resultset.getInt("ID")),
                     this.getReviewsByTourId(resultset.getInt("ID")))
@@ -106,28 +105,34 @@ object TourDao {
         var stmt: Statement?
         var resultset: ResultSet?
         var result = ArrayList<Tour>()
-        if(tour.leaveDate == null){
-            tour.leaveDate= Date(0,0,1)
+        if(tour.checkIn == ""){
+            tour.checkIn= "1999-01-01"
         }
-        if(tour.returnDate == null){
-            tour.returnDate = Date(4000,0,0)
+        if(tour.checkOut == ""){
+            tour.checkOut = "3000-01-01"
         }
-        var lDate =java.sql.Date(tour.leaveDate!!.time)
-        var rDate = java.sql.Date(tour.returnDate!!.time)
+
+        val a = "SELECT * FROM tourdb.TOUR T"+
+                " WHERE T.LEAVE_DATE > STR_TO_DATE('${tour.checkIn}','%Y-%m-%d')" +
+                "AND T.RETURN_DATE < STR_TO_DATE('${tour.checkOut}','%Y-%m-%d') AND"+
+                " UPPER(T.CITY) LIKE UPPER('%${tour.city}%')"
+        println(a)
 
         try {
             stmt = conn!!.createStatement()
-            resultset = stmt!!.executeQuery("SELECT * FROM tourdb.TOUR T INNER JOIN tourdb.COUNTRY C"+
-                    " WHERE C.ID = T.COUNTRY_FK AND T.LEAVE_DATE > STR_TO_DATE('$lDate','%Y-%m-%d')" +
-                    "AND T.RETURN_DATE < STR_TO_DATE('$rDate','%Y-%m-%d') AND"+
-                    " UPPER(C.NAME) LIKE '%${tour.city}%'")
+            resultset = stmt!!.executeQuery("SELECT * FROM tourdb.TOUR T"+
+                    " WHERE T.LEAVE_DATE > STR_TO_DATE('${tour.checkIn}','%Y-%m-%d')" +
+                    "AND T.RETURN_DATE < STR_TO_DATE('${tour.checkOut}','%Y-%m-%d') AND"+
+                    " UPPER(T.CITY) LIKE UPPER('%${tour.city}%')")
 
             while(resultset!!.next()) {
                 result.add(Tour(resultset.getInt("ID"), resultset.getString("NAME"),
                     resultset.getString("DESCRIPTION"), resultset.getInt("RATING"),
-                    resultset.getDate("LEAVE_DATE"), resultset.getDate("RETURN_DATE"),
+                    resultset.getString("LEAVE_DATE"), resultset.getString("RETURN_DATE"),
+                    resultset.getFloat("DURATION"),
                     resultset.getDouble("PRICE"), resultset.getInt("SEATS"),
                     resultset.getString("CITY"),
+                    resultset.getString("IMAGE"),
                     this.getCategoryById(resultset.getInt("CATEGORY_FK")),
                     this.getActivitiesByTourId(resultset.getInt("ID")),
                     this.getReviewsByTourId(resultset.getInt("ID")))
@@ -168,9 +173,11 @@ object TourDao {
             if(resultset!!.next()) {
                 result = (Tour(resultset.getInt("ID"), resultset.getString("NAME"),
                     resultset.getString("DESCRIPTION"), resultset.getInt("RATING"),
-                    resultset.getDate("LEAVE_DATE"), resultset.getDate("RETURN_DATE"),
+                    resultset.getString("LEAVE_DATE"), resultset.getString("RETURN_DATE"),
+                    resultset.getFloat("DURATION"),
                     resultset.getDouble("PRICE"), resultset.getInt("SEATS"),
                     resultset.getString("CITY"),
+                    resultset.getString("IMAGE"),
                     this.getCategoryById(resultset.getInt("CATEGORY_FK")),
                     this.getActivitiesByTourId(resultset.getInt("ID")),
                     this.getReviewsByTourId(resultset.getInt("ID")))
@@ -183,11 +190,13 @@ object TourDao {
     }
 
     fun putUser(user: User): Boolean{
+        println("CALL tourdb.PUT_USER('${user.name}','${user.email}'," +
+                "STR_TO_DATE('${user.birthDate}','%Y-%m-%d'),'${user.password}','${user.country}')")
         var stmt: Statement?
-        var date = java.sql.Date(user.birthDate.time)
+
         try {
             stmt = conn!!.prepareCall("CALL tourdb.PUT_USER('${user.name}','${user.email}'," +
-                                        "STR_TO_DATE('$date','%Y-%m-%d'),'${user.password}','${user.country}')")
+                                        "STR_TO_DATE('${user.birthDate}','%Y-%m-%d'),'${user.password}','${user.country}')")
             stmt!!.executeQuery()
         } catch (ex: SQLException) {
             ex.printStackTrace()
@@ -205,9 +214,29 @@ object TourDao {
             resultset = stmt!!.executeQuery("SELECT * FROM tourdb.user WHERE EMAIL = '${user.email}' AND PASSWORD = '${user.password}';")
             if(resultset!!.next()) {
                 result = User(resultset.getInt("ID"),resultset.getString("NAME"),
-                    resultset.getString("EMAIL"), resultset.getDate("BIRTH_DATE"),
+                    resultset.getString("EMAIL"), resultset.getString("BIRTH_DATE"),
                     resultset.getString("PASSWORD"),
                     resultset.getString("COUNTRY")
+                )
+            }
+        } catch (ex: SQLException) {
+            ex.printStackTrace()
+        }
+        return result;
+    }
+
+    fun getUsers(): ArrayList<User>{
+        var result = ArrayList<User>()
+        var stmt: Statement?
+        var resultset: ResultSet?
+        try {
+            stmt = conn!!.createStatement()
+            resultset = stmt!!.executeQuery("SELECT * FROM tourdb.user;")
+            while(resultset!!.next()) {
+                result.add(User(resultset.getInt("ID"),resultset.getString("NAME"),
+                    resultset.getString("EMAIL"), resultset.getString("BIRTH_DATE"),
+                    resultset.getString("PASSWORD"),
+                    resultset.getString("COUNTRY"))
                 )
             }
         } catch (ex: SQLException) {

@@ -3,11 +3,21 @@ package com.jasson.tourAppMobile.ui.explore
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.jasson.tourAppMobile.model.Tour
+import com.jasson.tourAppMobile.model.repositories.TourRepository
 
 class ExploreViewModel : ViewModel() {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is notifications Fragment"
+    var tours = MutableLiveData<ArrayList<Tour>>()
+    var tourRepository = TourRepository()
+
+    init {
+        var t = Tour()
+        tours = tourRepository.tours
+        tourRepository.getTours(t)
     }
-    val text: LiveData<String> = _text
+
+    fun searchTours(tour: Tour){
+        tourRepository.getTours(tour)
+    }
 }

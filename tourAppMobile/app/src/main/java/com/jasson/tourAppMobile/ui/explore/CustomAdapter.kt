@@ -10,11 +10,12 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.jasson.tourAppMobile.R
 import com.jasson.tourAppMobile.model.Tour
+import com.squareup.picasso.Picasso
 import org.w3c.dom.Text
 import java.lang.Exception
 
 class CustomAdapter(
-    private val tourList: ArrayList<Tour>,
+    var tourList: ArrayList<Tour>,
     private val tourSelectionListener: TourSelectionListener
 ) : RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
 
@@ -48,27 +49,33 @@ class CustomAdapter(
         }
 
         fun bindCell(tour: Tour) {
-            val context = this.itemView.context
             try {
                 val titleTextView = itemView.findViewById(R.id.textViewTourTitle) as TextView
                 val poster = itemView.findViewById(R.id.tourPoster) as ImageView
                 val rating = itemView.findViewById(R.id.ratingBar) as RatingBar
                 val opinions = itemView.findViewById(R.id.textViewOpinions) as TextView
                 val price = itemView.findViewById(R.id.textViewPrice) as TextView
-                val imageUri = "@drawable/${tour.image}"
-                val imageResource = context.resources.getIdentifier(imageUri, null, context.packageName)
-                val logoDrawable = context.resources.getDrawable(imageResource)
-                poster.setImageDrawable(logoDrawable)
+                val duration = itemView.findViewById(R.id.durationText) as TextView
                 titleTextView.text = tour.name
                 rating.numStars = tour.rating
-                opinions.text = "${tour.reviews.size} reviews"
-                price.text = "$${tour.price}"
-
-
+                opinions.text = "${tour.reviews.size} ${itemView.context.getString(R.string.reviews)}"
+                price.text = "${itemView.context.getString(R.string.price)}${tour.price}"
+                loadRemoteImage(tour.image,poster)
+                duration.text = "${tour.duration} ${itemView.context.getString(R.string.hours)}"
             } catch (ex: Exception) {
 
             }
 
+        }
+
+        private fun loadRemoteImage(url: String, imageView: ImageView){
+            imageView.run{
+                Picasso.get().load(url).fetch()
+                Picasso.get().load(url)
+                    .resize(800,500)
+                    .error(R.drawable.vulcan)
+                    .into(this)
+            }
         }
     }
 }

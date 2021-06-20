@@ -39,19 +39,6 @@ DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `tourdb`.`COUNTRY`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `tourdb`.`COUNTRY` (
-  `ID` INT NOT NULL AUTO_INCREMENT,
-  `NAME` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`ID`),
-  UNIQUE INDEX `NAME_UNIQUE` (`NAME` ASC) VISIBLE)
-ENGINE = InnoDB
-AUTO_INCREMENT = 2
-DEFAULT CHARACTER SET = utf8;
-
-
--- -----------------------------------------------------
 -- Table `tourdb`.`TOUR`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `tourdb`.`TOUR` (
@@ -64,18 +51,14 @@ CREATE TABLE IF NOT EXISTS `tourdb`.`TOUR` (
   `PRICE` DOUBLE NOT NULL,
   `SEATS` INT NOT NULL,
   `CATEGORY_FK` INT NOT NULL,
-  `COUNTRY_FK` INT NOT NULL,
+  `CITY` VARCHAR(45) NOT NULL,
+  `IMAGE` VARCHAR(200) NOT NULL,
+  `DURATION` FLOAT NOT NULL,
   PRIMARY KEY (`ID`),
   INDEX `fk_TOUR_CATEGORY1_idx` (`CATEGORY_FK` ASC) VISIBLE,
-  INDEX `fk_TOUR_COUNTRY1_idx` (`COUNTRY_FK` ASC) VISIBLE,
   CONSTRAINT `fk_TOUR_CATEGORY1`
     FOREIGN KEY (`CATEGORY_FK`)
-    REFERENCES `tourdb`.`CATEGORY` (`ID`),
-  CONSTRAINT `fk_TOUR_COUNTRY1`
-    FOREIGN KEY (`COUNTRY_FK`)
-    REFERENCES `tourdb`.`COUNTRY` (`ID`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    REFERENCES `tourdb`.`CATEGORY` (`ID`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
@@ -104,21 +87,15 @@ DEFAULT CHARACTER SET = utf8;
 -- Table `tourdb`.`USER`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `tourdb`.`USER` (
-  `ID` INT NOT NULL,
+  `ID` INT NOT NULL AUTO_INCREMENT,
   `NAME` VARCHAR(45) NOT NULL,
   `EMAIL` VARCHAR(45) NOT NULL,
   `BIRTH_DATE` DATE NOT NULL,
   `PASSWORD` VARCHAR(45) NOT NULL,
   `ADMIN` TINYINT NOT NULL DEFAULT 0,
-  `COUNTRY_FK` INT NOT NULL,
+  `COUNTRY` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`ID`),
-  UNIQUE INDEX `EMAIL_UNIQUE` (`EMAIL` ASC) VISIBLE,
-  INDEX `fk_USER_COUNTRY1_idx` (`COUNTRY_FK` ASC) VISIBLE,
-  CONSTRAINT `fk_USER_COUNTRY1`
-    FOREIGN KEY (`COUNTRY_FK`)
-    REFERENCES `tourdb`.`COUNTRY` (`ID`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+  UNIQUE INDEX `EMAIL_UNIQUE` (`EMAIL` ASC) VISIBLE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
@@ -158,23 +135,6 @@ CREATE TABLE IF NOT EXISTS `tourdb`.`REVIEW` (
     REFERENCES `tourdb`.`TOUR` (`ID`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
-
-
--- -----------------------------------------------------
--- Table `tourdb`.`IMAGE`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `tourdb`.`IMAGE` (
-  `ID` INT NOT NULL AUTO_INCREMENT,
-  `LINK` VARCHAR(500) NOT NULL,
-  `TOUR_FK` INT NOT NULL,
-  PRIMARY KEY (`ID`),
-  INDEX `fk_IMAGE_TOUR1_idx` (`TOUR_FK` ASC) VISIBLE,
-  CONSTRAINT `fk_IMAGE_TOUR1`
-    FOREIGN KEY (`TOUR_FK`)
-    REFERENCES `tourdb`.`TOUR` (`ID`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
